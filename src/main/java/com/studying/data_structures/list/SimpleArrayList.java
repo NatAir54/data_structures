@@ -27,10 +27,6 @@ public class SimpleArrayList implements List{
         }
     }
 
-    public int getCapacity() {
-        return capacity;
-    }
-
     @Override
     public void add(Object value) {
         add(value, nItems);

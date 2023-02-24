@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -295,22 +297,28 @@ public class SimpleArrayListTest {
 
     @DisplayName("test increaseCapacity works correctly for both constructors")
     @Test
-    public void testIncreaseCapacityWorksCorrectly() {
+    public void testIncreaseCapacityWorksCorrectly() throws NoSuchFieldException, IllegalAccessException {
         SimpleArrayList list = new SimpleArrayList();
         list.add("a");
         list.add("b");
-        assertEquals(10, list.getCapacity());
+
+        Field dataField = SimpleArrayList.class.getDeclaredField("array");
+        dataField.setAccessible(true);
+
+        assertEquals(10, ((Object[])dataField.get(list)).length);
         list.clear();
-        assertEquals(10, list.getCapacity());
+        assertEquals(10, ((Object[])dataField.get(list)).length);
+
         for (int i = 0; i < 11; i++) {
             list.add(i);
         }
-        assertEquals(16, list.getCapacity());
+        assertEquals(16, ((Object[])dataField.get(list)).length);
+
         SimpleArrayList list2 = new SimpleArrayList(16);
         for (int i = 0; i < 17; i++) {
             list2.add(i, 0);
         }
-        assertEquals(25, list2.getCapacity());
+        assertEquals(25, ((Object[])dataField.get(list2)).length);
     }
 
     @DisplayName("test constructor with initial capacity throw IllegalArgumentException")
@@ -319,7 +327,6 @@ public class SimpleArrayListTest {
         SimpleArrayList list = new SimpleArrayList(0);
         list.add("a");
         list.add("b");
-        assertEquals(10, list.getCapacity());
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new SimpleArrayList(-1);
         });

@@ -2,7 +2,7 @@ package com.studying.data_structures.list;
 
 import java.util.StringJoiner;
 
-public class SimpleArrayList implements List{
+public class SimpleArrayList implements List {
     private final int DEFAULT_CAPACITY = 10;
     private int capacity;
     private Object[] array;
@@ -23,7 +23,7 @@ public class SimpleArrayList implements List{
             capacity = DEFAULT_CAPACITY;
             array = new Object[capacity];
         } else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal Argument: " + initialCapacity);
         }
     }
 
@@ -32,6 +32,9 @@ public class SimpleArrayList implements List{
         add(value, nItems);
     }
 
+    int getCapacity() {
+        return capacity;
+    }
 
     private void increaseCapacity() {
         capacity = (capacity * 3 / 2) + 1;
@@ -62,7 +65,7 @@ public class SimpleArrayList implements List{
             throw new IndexOutOfBoundsException();
         }
         Object removedValue = array[index];
-        if(index == nItems - 1) {
+        if (index == nItems - 1) {
             array[--nItems] = null;
             return removedValue;
         }
@@ -73,7 +76,7 @@ public class SimpleArrayList implements List{
 
     @Override
     public Object get(int index) {
-        if(nItems == 0 || index < 0 || index >= nItems) {
+        if (nItems == 0 || index < 0 || index >= nItems) {
             throw new IndexOutOfBoundsException();
         }
         return array[index];

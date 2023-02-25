@@ -1,6 +1,5 @@
-package com.studying.datastructures.list;
+package com.studying.data_structures.list;
 
-import com.studying.data_structures.list.SimpleArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SimpleArrayListTest {
-    @DisplayName("add element to the end of list works correctly and changes size")
+    @DisplayName("test add element to the end of list works correctly and changes size")
     @Test
-    public void addElementToTheEndOfListAndRemoveWorksCorrectlyAndChangesSize() {
+    void addElementToTheEndOfListAndRemoveWorksCorrectlyAndChangesSize() {
         SimpleArrayList list = new SimpleArrayList();
         list.add(1);
         list.add(2);
@@ -28,7 +27,7 @@ public class SimpleArrayListTest {
 
     @DisplayName("simple test: fill the whole list and remove all the items, repeat")
     @Test
-    public void testAddRemovePrint() {
+    void testAddRemovePrint() {
         SimpleArrayList list = new SimpleArrayList();
         for (int i = 0; i < 10; i++) {
             list.add(i);
@@ -45,9 +44,9 @@ public class SimpleArrayListTest {
         }
     }
 
-    @DisplayName("add element by index works correctly and changes size")
+    @DisplayName("test add element by index works correctly and changes size")
     @Test
-    public void addElementByIndexWorksCorrectlyAndChangesSize() {
+    void addElementByIndexWorksCorrectlyAndChangesSize() {
         SimpleArrayList list = new SimpleArrayList();
         list.add("a");
         list.add("b");
@@ -63,9 +62,9 @@ public class SimpleArrayListTest {
 
     }
 
-    @DisplayName("add element by index throw IndexOutOfBoundsException")
+    @DisplayName("test add element by index throws IndexOutOfBoundsException")
     @Test
-    public void addElementByIndexThrowIndexOutOfBoundsException() {
+    void addElementByIndexThrowIndexOutOfBoundsException() {
         SimpleArrayList list = new SimpleArrayList();
         list.add(1);
         list.add(2);
@@ -77,9 +76,9 @@ public class SimpleArrayListTest {
         });
     }
 
-    @DisplayName("test remove throw IndexOutOfBoundsException")
+    @DisplayName("test remove throws IndexOutOfBoundsException")
     @Test
-    public void removeElementByIndexThrowIndexOutOfBoundsException() {
+    void removeElementByIndexThrowIndexOutOfBoundsException() {
         SimpleArrayList list = new SimpleArrayList();
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
             list.remove(0);
@@ -97,9 +96,9 @@ public class SimpleArrayListTest {
         });
     }
 
-    @DisplayName("test get and set works correctly")
+    @DisplayName("test get and set work correctly")
     @Test
-    public void testGetAndSetWorksCorrectly() {
+    void testGetAndSetWorksCorrectly() {
         SimpleArrayList list = new SimpleArrayList();
         list.add(1);
         list.add(2);
@@ -111,7 +110,7 @@ public class SimpleArrayListTest {
 
     @DisplayName("test set throws IndexOutOfBoundsException")
     @Test
-    public void testSetThrowIndexOutOfBoundsException() {
+    void testSetThrowIndexOutOfBoundsException() {
         SimpleArrayList list = new SimpleArrayList();
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
             list.set(0, 0);
@@ -131,7 +130,7 @@ public class SimpleArrayListTest {
 
     @DisplayName("test get throws IndexOutOfBoundsException")
     @Test
-    public void testGetThrowIndexOutOfBoundsException() {
+    void testGetThrowIndexOutOfBoundsException() {
         SimpleArrayList list = new SimpleArrayList();
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
             list.get(0);
@@ -152,14 +151,14 @@ public class SimpleArrayListTest {
 
     @DisplayName("test isEmpty returns true on a new list")
     @Test
-    public void testIsEmptyReturnTrueOnNewList() {
+    void testIsEmptyReturnTrueOnNewList() {
         SimpleArrayList list = new SimpleArrayList();
         assertTrue(list.isEmpty());
     }
 
     @DisplayName("test isEmpty returns false on the list with data")
     @Test
-    public void testIsEmptyReturnFalseOnListWithData() {
+    void testIsEmptyReturnFalseOnListWithData() {
         SimpleArrayList list = new SimpleArrayList();
         list.add(1);
         assertFalse(list.isEmpty());
@@ -167,7 +166,7 @@ public class SimpleArrayListTest {
 
     @DisplayName("test isEmpty returns true on the list after clear")
     @Test
-    public void testIsEmptyReturnTrueOnListAfterClear() {
+    void testIsEmptyReturnTrueOnListAfterClear() {
         SimpleArrayList list = new SimpleArrayList();
         list.add(1);
         list.add(2);
@@ -177,7 +176,7 @@ public class SimpleArrayListTest {
 
     @DisplayName("test contains returns true")
     @Test
-    public void testContainsReturnTrue() {
+    void testContainsReturnTrue() {
         SimpleArrayList list = new SimpleArrayList();
         list.add(1);
         list.add(2);
@@ -186,7 +185,7 @@ public class SimpleArrayListTest {
 
     @DisplayName("test contains returns false")
     @Test
-    public void testContainsReturnFalse() {
+    void testContainsReturnFalse() {
         SimpleArrayList list = new SimpleArrayList();
         list.add(1);
         list.add(2);
@@ -196,7 +195,7 @@ public class SimpleArrayListTest {
 
     @DisplayName("test contains for a null value")
     @Test
-    public void testContainsForNullValue() {
+    void testContainsForNullValue() {
         SimpleArrayList list = new SimpleArrayList();
         list.add(1);
         list.add(2);
@@ -208,14 +207,14 @@ public class SimpleArrayListTest {
 
     @DisplayName("test toString on empty list")
     @Test
-    public void testToStringOnEmptyList() {
+    void testToStringOnEmptyList() {
         SimpleArrayList list = new SimpleArrayList();
         assertEquals("[]", list.toString());
     }
 
     @DisplayName("test toString on list with data")
     @Test
-    public void testToStringOnListWithData() {
+    void testToStringOnListWithData() {
         SimpleArrayList list = new SimpleArrayList();
         list.add("a");
         list.add("b");
@@ -230,7 +229,7 @@ public class SimpleArrayListTest {
 
     @DisplayName("test toString on list after remove all data")
     @Test
-    public void testToStringOnListAfterRemoveAllData() {
+    void testToStringOnListAfterRemoveAllData() {
         SimpleArrayList list = new SimpleArrayList();
         list.add("a");
         list.add("b");
@@ -242,7 +241,7 @@ public class SimpleArrayListTest {
 
     @DisplayName("test toString on list after clear")
     @Test
-    public void testToStringOnListAfterClear() {
+    void testToStringOnListAfterClear() {
         SimpleArrayList list = new SimpleArrayList();
         list.add("a");
         list.add("b");
@@ -252,7 +251,7 @@ public class SimpleArrayListTest {
 
     @DisplayName("test indexOf works correctly")
     @Test
-    public void testIndexOfWorksCorrectly() {
+    void testIndexOfWorksCorrectly() {
         SimpleArrayList list = new SimpleArrayList();
         list.add("a");
         list.add("b");
@@ -263,7 +262,7 @@ public class SimpleArrayListTest {
 
     @DisplayName("test lastIndexOf works correctly")
     @Test
-    public void testLastIndexOfWorksCorrectly() {
+    void testLastIndexOfWorksCorrectly() {
         SimpleArrayList list = new SimpleArrayList();
         list.add("a");
         assertEquals(-1, list.lastIndexOf("b"));
@@ -272,9 +271,9 @@ public class SimpleArrayListTest {
         assertEquals(2, list.lastIndexOf("b"));
     }
 
-    @DisplayName("test indexOf for null value")
+    @DisplayName("test indexOf for a null value")
     @Test
-    public void testIndexOfForNullValue() {
+    void testIndexOfForNullValue() {
         SimpleArrayList list = new SimpleArrayList();
         list.add("a");
         list.add("b");
@@ -283,9 +282,9 @@ public class SimpleArrayListTest {
         assertEquals(2, list.indexOf(null));
     }
 
-    @DisplayName("test lastIndexOf for null value")
+    @DisplayName("test lastIndexOf for a null value")
     @Test
-    public void testLastIndexOfForNullValue() {
+    void testLastIndexOfForNullValue() {
         SimpleArrayList list = new SimpleArrayList();
         list.add("a");
         assertEquals(-1, list.lastIndexOf(null));
@@ -297,36 +296,32 @@ public class SimpleArrayListTest {
 
     @DisplayName("test increaseCapacity works correctly for both constructors")
     @Test
-    public void testIncreaseCapacityWorksCorrectly() throws NoSuchFieldException, IllegalAccessException {
+    void testIncreaseCapacityWorksCorrectly() throws NoSuchFieldException, IllegalAccessException {
         SimpleArrayList list = new SimpleArrayList();
         list.add("a");
         list.add("b");
-
-        Field dataField = SimpleArrayList.class.getDeclaredField("array");
-        dataField.setAccessible(true);
-
-        assertEquals(10, ((Object[])dataField.get(list)).length);
+        assertEquals(10, list.getCapacity());
         list.clear();
-        assertEquals(10, ((Object[])dataField.get(list)).length);
+        assertEquals(10, list.getCapacity());
 
         for (int i = 0; i < 11; i++) {
             list.add(i);
         }
-        assertEquals(16, ((Object[])dataField.get(list)).length);
-
+        assertEquals(16, list.getCapacity());
         SimpleArrayList list2 = new SimpleArrayList(16);
         for (int i = 0; i < 17; i++) {
             list2.add(i, 0);
         }
-        assertEquals(25, ((Object[])dataField.get(list2)).length);
+        assertEquals(25, list2.getCapacity());
     }
 
     @DisplayName("test constructor with initial capacity throw IllegalArgumentException")
     @Test
-    public void testConstructorWithInitialCapacityThrowIllegalArgumentException() {
+    void testConstructorWithInitialCapacityThrowIllegalArgumentException() {
         SimpleArrayList list = new SimpleArrayList(0);
         list.add("a");
         list.add("b");
+        assertEquals(10, list.getCapacity());
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new SimpleArrayList(-1);
         });

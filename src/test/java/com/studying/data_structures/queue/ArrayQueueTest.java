@@ -1,6 +1,5 @@
-package com.studying.datastructures.queue;
+package com.studying.data_structures.queue;
 
-import com.studying.data_structures.queue.ArrayQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class ArrayQueueTest {
-    @DisplayName("test enqueue/dequeue works correctly and changes size")
+    @DisplayName("test enqueue/dequeue work correctly and changes size")
     @Test
-    public void testEnqueueAndDequeueWorkCorrectlyAndChangeSize() {
+    void testEnqueueAndDequeueWorkCorrectlyAndChangeSize() {
         ArrayQueue arrayQueue = new ArrayQueue(4);
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");
@@ -31,7 +30,7 @@ public class ArrayQueueTest {
 
     @DisplayName("simple test: fill the whole queue and delete all the items, repeat")
     @Test
-    public void testEnqueueDequeuePrint() {
+    void testEnqueueDequeuePrint() {
         ArrayQueue arrayQueue = new ArrayQueue();
         for (int i = 0; i < arrayQueue.size(); i++) {
             arrayQueue.enqueue(i);
@@ -50,7 +49,7 @@ public class ArrayQueueTest {
 
     @DisplayName("test enqueue and peek work correctly")
     @Test
-    public void testEnqueueAndPeek() {
+    void testEnqueueAndPeek() {
         ArrayQueue arrayQueue = new ArrayQueue();
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");
@@ -64,14 +63,14 @@ public class ArrayQueueTest {
 
     @DisplayName("test isEmpty returns true on a new queue")
     @Test
-    public void testIsEmptyReturnTrueOnNewQueue() {
+    void testIsEmptyReturnTrueOnNewQueue() {
         ArrayQueue arrayQueue = new ArrayQueue();
         assertTrue(arrayQueue.isEmpty());
     }
 
     @DisplayName("test isEmpty returns false on a queue with data")
     @Test
-    public void testIsEmptyReturnFalseOnQueueWithData() {
+    void testIsEmptyReturnFalseOnQueueWithData() {
         ArrayQueue arrayQueue = new ArrayQueue();
         arrayQueue.enqueue("a");
         assertFalse(arrayQueue.isEmpty());
@@ -79,7 +78,7 @@ public class ArrayQueueTest {
 
     @DisplayName("test isEmpty returns true on a queue after clear")
     @Test
-    public void testIsEmptyReturnTrueOnQueueAfterClear() {
+    void testIsEmptyReturnTrueOnQueueAfterClear() {
         ArrayQueue arrayQueue = new ArrayQueue();
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");
@@ -89,7 +88,7 @@ public class ArrayQueueTest {
 
     @DisplayName("test contains returns true")
     @Test
-    public void testContainsReturnTrue() {
+    void testContainsReturnTrue() {
         ArrayQueue arrayQueue = new ArrayQueue();
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");
@@ -108,14 +107,14 @@ public class ArrayQueueTest {
 
     @DisplayName("test contains returns false on empty queue")
     @Test
-    public void testContainsReturnFalseOnEmptyQueue() {
+    void testContainsReturnFalseOnEmptyQueue() {
         ArrayQueue arrayQueue = new ArrayQueue();
         assertFalse(arrayQueue.contains("a"));
     }
 
     @DisplayName("test contains for a null value")
     @Test
-    public void testContainsForNullValue() {
+    void testContainsForNullValue() {
         ArrayQueue arrayQueue = new ArrayQueue(2);
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");
@@ -126,26 +125,26 @@ public class ArrayQueueTest {
         assertEquals("b", arrayQueue.dequeue());
     }
 
-    @DisplayName("test dequeue on empty queue throws IllegalStateException")
+    @DisplayName("test throws IllegalStateException when dequeue on empty queue")
     @Test
-    public void testThrowIllegalStateExceptionWhenDequeueOnEmptyQueue() {
+    void testThrowIllegalStateExceptionWhenDequeueOnEmptyQueue() {
         ArrayQueue arrayQueue = new ArrayQueue();
         Assertions.assertThrows(IllegalStateException.class, () -> {
             arrayQueue.dequeue();
         });
     }
-    @DisplayName("test peek on empty queue throws IllegalStateException")
+    @DisplayName("test throws IllegalStateException when peek on empty queue")
     @Test
-    public void testThrowIllegalStateExceptionWhenPeekOnEmptyQueue() {
+    void testThrowIllegalStateExceptionWhenPeekOnEmptyQueue() {
         ArrayQueue arrayQueue = new ArrayQueue();
         Assertions.assertThrows(IllegalStateException.class, () -> {
             arrayQueue.peek();
         });
     }
 
-    @DisplayName("test enqueue on full queue throws IllegalStateException")
+    @DisplayName("test throws IllegalStateException when enqueue on full queue")
     @Test
-    public void testThrowIllegalStateExceptionWhenEnqueueOnFullQueue() {
+    void testThrowIllegalStateExceptionWhenEnqueueOnFullQueue() {
         ArrayQueue arrayQueue = new ArrayQueue(2);
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");
@@ -156,14 +155,14 @@ public class ArrayQueueTest {
 
     @DisplayName("test toString on empty queue")
     @Test
-    public void testToStringOnEmptyQueue() {
+    void testToStringOnEmptyQueue() {
         ArrayQueue arrayQueue = new ArrayQueue(2);
         assertEquals("[]", arrayQueue.toString());
     }
 
     @DisplayName("test toString on queue with data")
     @Test
-    public void testToStringOnQueueWithData() {
+    void testToStringOnQueueWithData() {
         ArrayQueue arrayQueue = new ArrayQueue(2);
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");
@@ -174,7 +173,7 @@ public class ArrayQueueTest {
 
     @DisplayName("test toString on queue with data when rear is less then front")
     @Test
-    public void testToStringOnQueueWithDataWhenRearLessThenFront() {
+    void testToStringOnQueueWithDataWhenRearLessThenFront() {
         ArrayQueue arrayQueue = new ArrayQueue(3);
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");
@@ -188,7 +187,7 @@ public class ArrayQueueTest {
 
     @DisplayName("test toString on queue after dequeue all data")
     @Test
-    public void testToStringOnQueueAfterDequeueAllData() {
+    void testToStringOnQueueAfterDequeueAllData() {
         ArrayQueue arrayQueue = new ArrayQueue();
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");
@@ -199,7 +198,7 @@ public class ArrayQueueTest {
 
     @DisplayName("test toString on queue after clear")
     @Test
-    public void testToStringOnQueueAfterClear() {
+    void testToStringOnQueueAfterClear() {
         ArrayQueue arrayQueue = new ArrayQueue();
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");

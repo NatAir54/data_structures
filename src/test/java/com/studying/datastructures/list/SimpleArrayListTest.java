@@ -1,16 +1,14 @@
-package com.studying.data_structures.list;
+package com.studying.datastructures.list;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SimpleArrayListTest {
-    @DisplayName("test add element to the end of list works correctly and changes size")
+    @DisplayName("test add element to the end of list and remove works correctly and changes size")
     @Test
     void addElementToTheEndOfListAndRemoveWorksCorrectlyAndChangesSize() {
         SimpleArrayList list = new SimpleArrayList();
@@ -44,22 +42,21 @@ public class SimpleArrayListTest {
         }
     }
 
-    @DisplayName("test add element by index works correctly and changes size")
+    @DisplayName("test add element by index and get work correctly and changes size")
     @Test
-    void addElementByIndexWorksCorrectlyAndChangesSize() {
+    void addElementByIndexAndGetWorkCorrectlyAndChangesSize() {
         SimpleArrayList list = new SimpleArrayList();
         list.add("a");
         list.add("b");
         list.add("c");
-        list.add("x", 2);
+        list.add("w", 2);
         assertEquals("c", list.get(3));
-        list.add("y", 0);
+        list.add("x", 0);
         assertEquals("a", list.get(1));
         assertEquals(5, list.size());
-        list.add("z", 5);
-        assertEquals("z", list.get(5));
+        list.add("y", 5);
+        assertEquals("y", list.get(5));
         assertEquals(6, list.size());
-
     }
 
     @DisplayName("test add element by index throws IndexOutOfBoundsException")
@@ -102,10 +99,12 @@ public class SimpleArrayListTest {
         SimpleArrayList list = new SimpleArrayList();
         list.add(1);
         list.add(2);
+        list.add(3);
         assertEquals(2, list.get(1));
-        assertEquals(2, list.set(3, 1));
-        assertEquals(1, list.set(4, 0));
-        assertEquals("[4, 3]", list.toString());
+        assertEquals(3, list.set(4, 2));
+        assertEquals(1, list.set(5, 0));
+        assertEquals(2, list.set(6, 1));
+        assertEquals("[5, 6, 4]", list.toString());
     }
 
     @DisplayName("test set throws IndexOutOfBoundsException")

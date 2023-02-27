@@ -1,4 +1,4 @@
-package com.studying.data_structures.queue;
+package com.studying.datastructures.queue;
 
 // FIFO
 public interface Queue {

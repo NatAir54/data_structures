@@ -1,4 +1,4 @@
-package com.studying.data_structures.stack;
+package com.studying.datastructures.stack;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -66,7 +66,6 @@ public class ArrayStackTest {
         assertEquals(2, arrayStack.size());
         assertEquals("b", arrayStack.peek());
         assertEquals("b", arrayStack.peek());
-        assertEquals("b", arrayStack.peek());
         assertEquals(2, arrayStack.size());
     }
 
@@ -114,14 +113,16 @@ public class ArrayStackTest {
 
     @DisplayName("test contains for a null value")
     @Test
-    void testContainsForNullValue() {
+    void testPushAndContainsForNullValue() {
         ArrayStack arrayStack = new ArrayStack();
         arrayStack.push("a");
         arrayStack.push("b");
-        arrayStack.push(null);
-        assertTrue(arrayStack.contains(null));
-        arrayStack.pop();
-        assertFalse(arrayStack.contains(null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            arrayStack.push(null);
+        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            arrayStack.contains(null);
+        });
     }
 
     @DisplayName("test contains returns false on empty stack")
@@ -146,6 +147,23 @@ public class ArrayStackTest {
         ArrayStack arrayStack = new ArrayStack();
         Assertions.assertThrows(IllegalStateException.class, () -> {
             arrayStack.peek();
+        });
+    }
+
+    @DisplayName("test create stack with initial capacity")
+    @Test
+    void testCreateStackWithInitialCapacity() {
+        ArrayStack arrayStack = new ArrayStack(4);
+        assertEquals(4, arrayStack.getCapacity());
+        ArrayStack arrayStack2 = new ArrayStack(0);
+        assertEquals(10, arrayStack2.getCapacity());
+    }
+
+    @DisplayName("test throw IllegalArgumentException when create queue with illegal capacity")
+    @Test
+    void testCreateStackWithIllegalCapacity() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new ArrayStack(-1);
         });
     }
 }

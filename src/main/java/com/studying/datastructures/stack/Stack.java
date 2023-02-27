@@ -1,4 +1,4 @@
-package com.studying.data_structures.stack;
+package com.studying.datastructures.stack;
 
 // LIFO
 public interface Stack {

@@ -1,4 +1,4 @@
-package com.studying.data_structures.queue;
+package com.studying.datastructures.queue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -11,21 +11,29 @@ public class ArrayQueueTest {
     @DisplayName("test enqueue/dequeue work correctly and changes size")
     @Test
     void testEnqueueAndDequeueWorkCorrectlyAndChangeSize() {
-        ArrayQueue arrayQueue = new ArrayQueue(4);
+        ArrayQueue arrayQueue = new ArrayQueue(3);
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");
         arrayQueue.enqueue("c");
-        arrayQueue.enqueue("d");
 
-        assertEquals("a", arrayQueue.dequeue());
         assertEquals(3, arrayQueue.size());
+        assertEquals("a", arrayQueue.dequeue());
+        assertEquals(2, arrayQueue.size());
 
+        arrayQueue.enqueue("d");
         assertEquals("b", arrayQueue.dequeue());
         assertEquals("c", arrayQueue.dequeue());
-        arrayQueue.enqueue("e");
-        assertEquals("d", arrayQueue.dequeue());
         assertEquals(1, arrayQueue.size());
-        assertFalse(arrayQueue.isEmpty());
+    }
+
+    @DisplayName("test enqueue for a null value")
+    @Test
+    void testEnqueueForNullValue() {
+        ArrayQueue arrayQueue = new ArrayQueue(2);
+        arrayQueue.enqueue("a");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            arrayQueue.enqueue(null);
+        });
     }
 
     @DisplayName("simple test: fill the whole queue and delete all the items, repeat")
@@ -53,7 +61,6 @@ public class ArrayQueueTest {
         ArrayQueue arrayQueue = new ArrayQueue();
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");
-
         assertEquals(2, arrayQueue.size());
         assertEquals("a", arrayQueue.peek());
         assertEquals("a", arrayQueue.peek());
@@ -119,13 +126,12 @@ public class ArrayQueueTest {
         arrayQueue.enqueue("a");
         arrayQueue.enqueue("b");
         arrayQueue.dequeue();
-        assertTrue(arrayQueue.contains(null));
-        arrayQueue.enqueue("c");
-        assertFalse(arrayQueue.contains(null));
-        assertEquals("b", arrayQueue.dequeue());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            arrayQueue.contains(null);
+        });
     }
 
-    @DisplayName("test throws IllegalStateException when dequeue on empty queue")
+    @DisplayName("test throw IllegalStateException when dequeue on empty queue")
     @Test
     void testThrowIllegalStateExceptionWhenDequeueOnEmptyQueue() {
         ArrayQueue arrayQueue = new ArrayQueue();
@@ -133,7 +139,8 @@ public class ArrayQueueTest {
             arrayQueue.dequeue();
         });
     }
-    @DisplayName("test throws IllegalStateException when peek on empty queue")
+
+    @DisplayName("test throw IllegalStateException when peek on empty queue")
     @Test
     void testThrowIllegalStateExceptionWhenPeekOnEmptyQueue() {
         ArrayQueue arrayQueue = new ArrayQueue();
@@ -142,7 +149,7 @@ public class ArrayQueueTest {
         });
     }
 
-    @DisplayName("test throws IllegalStateException when enqueue on full queue")
+    @DisplayName("test throw IllegalStateException when enqueue on full queue")
     @Test
     void testThrowIllegalStateExceptionWhenEnqueueOnFullQueue() {
         ArrayQueue arrayQueue = new ArrayQueue(2);
@@ -182,7 +189,6 @@ public class ArrayQueueTest {
         arrayQueue.dequeue();
         arrayQueue.enqueue("d");
         assertEquals("[d, b, c]", arrayQueue.toString());
-        assertEquals("b", arrayQueue.dequeue());
     }
 
     @DisplayName("test toString on queue after dequeue all data")
@@ -204,5 +210,22 @@ public class ArrayQueueTest {
         arrayQueue.enqueue("b");
         arrayQueue.clear();
         assertEquals("[]", arrayQueue.toString());
+    }
+
+    @DisplayName("test create queue with initial capacity")
+    @Test
+    void testCreateQueueWithInitialCapacity() {
+        ArrayQueue arrayQueue = new ArrayQueue(5);
+        assertEquals(5, arrayQueue.getCapacity());
+        ArrayQueue arrayQueue2 = new ArrayQueue(0);
+        assertEquals(10, arrayQueue2.getCapacity());
+    }
+
+    @DisplayName("test throw IllegalArgumentException when create queue with illegal capacity")
+    @Test
+    void testCreateQueueWithIllegalCapacity() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new ArrayQueue(-1);
+        });
     }
 }

@@ -1,8 +1,9 @@
-package com.studying.data_structures.queue;
+package com.studying.datastructures.queue;
 
 import java.util.Arrays;
+import java.util.StringJoiner;
 
-public class ArrayQueue implements Queue{
+public class ArrayQueue implements Queue {
     private int nItems = 0;
     private Object[] array;
     private int front = 0;
@@ -13,11 +14,24 @@ public class ArrayQueue implements Queue{
     }
 
     public ArrayQueue(int initialCapacity) {
-        array = new Object[initialCapacity];
+        if (initialCapacity > 0) {
+            array = new Object[initialCapacity];
+        } else if (initialCapacity == 0) {
+            array = new Object[10];
+        } else {
+            throw new IllegalArgumentException("Illegal Argument: " + initialCapacity);
+        }
+    }
+
+    int getCapacity() {
+        return array.length;
     }
 
     @Override
     public void enqueue(Object value) {
+        if (value == null) {
+            throw new IllegalArgumentException("IllegalArgument: " + null);
+        }
         if (nItems == array.length) {
             throw new IllegalStateException("Queue is full!");
         }
@@ -63,19 +77,13 @@ public class ArrayQueue implements Queue{
     @Override
     public boolean contains(Object value) {
         if (value == null) {
-            for (int i = 0; i < array.length; i++) {
-                if (array[i] == null) {
-                    return true;
-                }
-            }
-            return false;
+            throw new IllegalArgumentException("IllegalArgument: " + null);
         }
         for (int i = 0; i < array.length; i++) {
             if (value.equals(array[i])) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -85,32 +93,22 @@ public class ArrayQueue implements Queue{
         nItems = 0;
     }
 
-    // need to fix?
     @Override
     public String toString() {
         if (nItems == 0) {
             return "[]";
         }
-        StringBuilder result = new StringBuilder("");
+        StringJoiner result = new StringJoiner(", ", "[", "]");
         if (front <= rear) {
             for (int i = front; i <= rear; i++) {
-                if (i < rear) {
-                    result.append(array[i]).append(", ");
-
-                } else {
-                    result.append(array[i]);
-                }
+                result.add(array[i].toString());
             }
         } else {
             for (int i = rear; i < array.length; i++) {
-                if (i < array.length - 1) {
-                    result.append(array[i]).append(", ");
-                } else {
-                    result.append(array[i]);
-                }
+                result.add(array[i].toString());
             }
         }
-
-        return "[" + result + "]";
+        return result.toString();
     }
+
 }

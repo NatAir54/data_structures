@@ -1,4 +1,4 @@
-package com.studying.data_structures.list;
+package com.studying.datastructures.list;
 
 public interface List {
     // add value to the end of the list

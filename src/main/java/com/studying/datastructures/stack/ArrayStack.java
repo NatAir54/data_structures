@@ -1,8 +1,8 @@
-package com.studying.data_structures.stack;
+package com.studying.datastructures.stack;
 
 import java.util.Arrays;
 
-public class ArrayStack implements Stack{
+public class ArrayStack implements Stack {
     private int nItems;
     private Object[] array;
 
@@ -11,11 +11,24 @@ public class ArrayStack implements Stack{
     }
 
     public ArrayStack(int initialCapacity) {
-        array = new Object[initialCapacity];
+        if (initialCapacity > 0) {
+            array = new Object[initialCapacity];
+        } else if (initialCapacity == 0) {
+            array = new Object[10];
+        } else {
+            throw new IllegalArgumentException("Illegal Argument: " + initialCapacity);
+        }
+    }
+
+    int getCapacity() {
+        return array.length;
     }
 
     @Override
     public void push(Object value) {
+        if (value == null) {
+            throw new IllegalArgumentException("IllegalArgument: " + null);
+        }
         increaseCapacity();
         array[nItems] = value;
         nItems++;
@@ -57,12 +70,7 @@ public class ArrayStack implements Stack{
     @Override
     public boolean contains(Object value) {
         if (value == null) {
-            for (int i = 0; i < nItems; i++) {
-                if (array[i] == null) {
-                    return true;
-                }
-            }
-            return false;
+            throw new IllegalArgumentException("IllegalArgument: " + null);
         }
         for (int i = 0; i < nItems; i++) {
             if (value.equals(array[i])) {

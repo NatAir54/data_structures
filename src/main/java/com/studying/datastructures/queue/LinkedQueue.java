@@ -1,6 +1,5 @@
 package com.studying.datastructures.queue;
 
-
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -82,5 +81,14 @@ public class LinkedQueue implements Queue {
             current = current.next;
         }
         return result.toString();
+    }
+
+    private static class Node {
+        private Object value;
+        private Node next;
+
+        private Node(Object value) {
+            this.value = value;
+        }
     }
 }

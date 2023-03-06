@@ -1,12 +1,9 @@
 package com.studying.datastructures.list;
 
-import com.studying.datastructures.stack.Stack;
-
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class SimpleLinkedList implements List, Stack {
+public class SimpleLinkedList implements List{
     private Node head;
     private Node tail;
     private int size;
@@ -18,180 +15,80 @@ public class SimpleLinkedList implements List, Stack {
 
     @Override
     public void add(Object value, int index) {
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Illegal argument: " + index);
-        }
-        Node node = new Node(value);
-        if(size == 0) {
-            head = tail = node;
+        checkIndexForAdd(index);
+        Node newNode = new Node(value);
+        if (size == 0) {
+            head = tail = newNode;
         } else if (index == size) {
-            tail.next = node;
-            node.prev = tail;
-            tail = node;
-        } else if (index == 0){
-            head.prev = node;
-            node.next = head;
-            head = node;
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        } else if (index == 0) {
+            head.prev = newNode;
+            newNode.next = head;
+            head = newNode;
         } else {
-            Node current = head;
-            for (int i = 0; i < index; i++) {
-                current = current.next;
-            }
+            Node current = getNode(index);
             Node temp = current.prev;
-            temp.next = node;
-            node.prev = temp;
-            node.next = current;
-            current.prev = node;
+            temp.next = newNode;
+            newNode.prev = temp;
+            newNode.next = current;
+            current.prev = newNode;
         }
         size++;
     }
 
     @Override
     public Object get(int index) {
-        if(size == 0) {
-            throw new IllegalStateException("LinkedList is empty");
-        }
-        if (index < 0 || index > size - 1) {
-            throw new IndexOutOfBoundsException("Illegal argument: " + index);
-        }
-        return getByIndex(head, index);
-    }
-
-    private Object getByIndex(Node head, int index) {
-        Node current = head;
+        checkIndex(index);
         if (index == 0) {
             return head.value;
-        } else if (index == size - 1) {
-            return tail.value;
-        } else {
-            for (int i = 0; i < index; i++) {
-                current = current.next;
-            }
         }
-        return current.value;
+        if (index == size - 1) {
+            return tail.value;
+        }
+        return getNode(index).value;
     }
 
     @Override
     public Object remove(int index) {
-        if (size == 0) {
-                throw new IllegalStateException("LinkedList is empty!");
-        }
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (index == 0) {
-            Node temp = head;
-            head = temp.next;
-            size--;
-            return temp.value;
+        checkIndex(index);
+        Node nodeToRemove;
+        if (size == 1) {
+            nodeToRemove = head;
+            head = tail = null;
+        } else if (index == 0) {
+            nodeToRemove = head;
+            head = nodeToRemove.next;
+            head.prev = null;
         } else if (index == size - 1) {
-            Node temp = tail;
-            tail = temp.prev;
+            nodeToRemove = tail;
+            tail = nodeToRemove.prev;
             tail.next = null;
-            size--;
-            return temp.value;
+        } else {
+            nodeToRemove = getNode(index);
+            Node temp = nodeToRemove.prev;
+            Node temp2 = nodeToRemove.next;
+            temp.next = temp2;
+            temp2.prev = temp;
         }
-        Node current = head;
-        for (int i = 0; i < index; i++) {
-            current = current.next;
-        }
-        Node temp = current.prev;
-        Node temp2 = current.next;
-        temp.next = temp2;
-        temp2.prev = temp;
         size--;
-        return current.value;
+        return nodeToRemove.value;
     }
 
     @Override
     public Object set(Object value, int index) {
-        if (size == 0) {
-            throw new IllegalStateException("LinkedList is empty!");
-        }
-        if (index >= size || index < 0) {
-            throw new IndexOutOfBoundsException();
-        }
-        Node node = new Node(value);
-        if (index == 0) {
-            Node temp = head;
-            Node temp2 = head.next;
-            head = node;
-            temp2.prev = head;
-            head.next = temp.next;
-            return temp.value;
-        } else if (index == size - 1) {
-            Node temp = tail;
-            Node temp2 = temp.prev;
-            tail = node;
-            tail.prev = temp2;
-            temp2.next = tail;
-            return temp.value;
-        }
-        Node current = head;
-        for (int i = 0; i < index; i++) {
-            current = current.next;
-        }
-        Node temp = current;
-        Node temp2 = current.prev;
-        Node temp3 = current.next;
-        current = node;
-        current.prev = temp2;
-        current.next = temp3;
-        temp2.next = current;
-        temp3.prev = current;
-        return temp.value;
+        checkIndex(index);
+        Node current = getNode(index);
+        Object oldValue = current.value;
+        current.value = value;
+        return oldValue;
     }
 
     @Override
     public void clear() {
         head = null;
         size = 0;
-    }
-
-    @Override
-    public void push(Object value) {
-        Node node = new Node(value);
-        if (size == 0) {
-            head = tail = node;
-        } else {
-            head.prev = node;
-            node.next = head;
-            head = node;
-        }
-        size++;
-    }
-
-    @Override
-    public Object peek() {
-        if (size == 0) {
-            throw new IllegalStateException("LinkedList is empty!");
-        }
-        return head.value;
-    }
-
-    @Override
-    public Object pop() {
-        Node deleted = head;
-        if (size == 0) {
-            throw new NoSuchElementException("LinkedList is empty!");
-        }else if (size == 1) {
-            head = tail = null;
-            size--;
-            return deleted.value;
-        } else if (size == 2) {
-            head = tail;
-            head.prev = null;
-            size--;
-            return deleted.value;
-        }
-        Node temp = deleted.next;
-        Node temp1 = temp.next;
-        head = temp;
-        head.prev = null;
-        head.next = temp1;
-        temp1.prev = head;
-        size--;
-        return deleted.value;
     }
 
     @Override
@@ -246,16 +143,51 @@ public class SimpleLinkedList implements List, Stack {
 
     @Override
     public String toString() {
-        if (size == 0) {
-            return "[]";
-        }
         StringJoiner result = new StringJoiner(", ", "[", "]");
         Node current = head;
-        while(current != null) {
+        while (current != null) {
             result.add(String.valueOf(current.value));
             current = current.next;
         }
         return result.toString();
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Illegal argument: " + index);
+        }
+    }
+
+    private void checkIndexForAdd(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Illegal argument: " + index);
+        }
+    }
+
+    private Node getNode(int index) {
+        Node current;
+        if (index < size / 2) {
+            current = head;
+            for (int i = 0; i < index; i++) {
+                current = current.next;
+            }
+        } else {
+            current = tail;
+            for (int i = size - 1; i > index; i--) {
+                current = current.prev;
+            }
+        }
+        return current;
+    }
+
+    private static class Node {
+        private Node next;
+        private Node prev;
+        private Object value;
+
+        private Node(Object value) {
+            this.value = value;
+        }
     }
 
 }

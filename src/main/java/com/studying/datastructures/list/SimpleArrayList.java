@@ -1,92 +1,65 @@
 package com.studying.datastructures.list;
 
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class SimpleArrayList implements List {
-    private final int DEFAULT_CAPACITY = 10;
-    private int capacity;
+    private static final int DEFAULT_CAPACITY = 10;
     private Object[] array;
-    private int nItems;
-
+    private int size;
 
     public SimpleArrayList() {
-        capacity = DEFAULT_CAPACITY;
-        array = new Object[capacity];
+        this(DEFAULT_CAPACITY);
     }
 
-
     public SimpleArrayList(int initialCapacity) {
-        if (initialCapacity > 0) {
-            capacity = initialCapacity;
-            array = new Object[capacity];
-        } else if (initialCapacity == 0) {
-            capacity = DEFAULT_CAPACITY;
-            array = new Object[capacity];
-        } else {
-            throw new IllegalArgumentException("Illegal Argument: " + initialCapacity);
+        if (initialCapacity < 0) {
+            throw new IllegalArgumentException("Invalid capacity : " + initialCapacity);
         }
+        array = new Object[initialCapacity];
     }
 
     @Override
     public void add(Object value) {
-        add(value, nItems);
-    }
-
-    int getCapacity() {
-        return capacity;
-    }
-
-    private void increaseCapacity() {
-        capacity = (capacity * 3 / 2) + 1;
-        Object[] newArray = new Object[capacity];
-        for (int i = 0; i < nItems; i++) {
-            newArray[i] = array[i];
-            array[i] = null;
-        }
-        array = newArray;
+        add(value, size);
     }
 
     @Override
     public void add(Object value, int index) {
-        if (index < 0 || index > nItems) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (nItems + 1 == capacity) {
+        checkIndexForAdd(index);
+        if (array.length == 0) {
             increaseCapacity();
         }
-        System.arraycopy(array, index, array, index + 1, nItems - index);
+        if (size == array.length) {
+            increaseCapacity();
+        }
+        System.arraycopy(array, index, array, index + 1, size - index);
         array[index] = value;
-        ++nItems;
-    }
-
-    @Override
-    public Object remove(int index) {
-        if (nItems == 0 || index < 0 || index >= nItems) {
-            throw new IndexOutOfBoundsException();
-        }
-        Object removedValue = array[index];
-        if (index == nItems - 1) {
-            array[--nItems] = null;
-            return removedValue;
-        }
-        System.arraycopy(array, index + 1, array, index, nItems - index - 1);
-        array[--nItems] = null;
-        return removedValue;
+        ++size;
     }
 
     @Override
     public Object get(int index) {
-        if (nItems == 0 || index < 0 || index >= nItems) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(index);
         return array[index];
     }
 
     @Override
-    public Object set(Object newValue, int index) {
-        if (nItems == 0 || index >= nItems || index < 0) {
-            throw new IndexOutOfBoundsException();
+    public Object remove(int index) {
+        checkIndex(index);
+        Object removedValue = array[index];
+        if (index == size - 1) {
+            array[--size] = null;
+            return removedValue;
         }
+        System.arraycopy(array, index + 1, array, index, size - index - 1);
+        array[--size] = null;
+        return removedValue;
+    }
+
+    @Override
+    public Object set(Object newValue, int index) {
+        checkIndex(index);
         Object oldValue = array[index];
         array[index] = newValue;
         return oldValue;
@@ -94,41 +67,32 @@ public class SimpleArrayList implements List {
 
     @Override
     public void clear() {
-        for (int i = 0; i < nItems; i++) {
+        for (int i = 0; i < size; i++) {
             array[i] = null;
         }
-        nItems = 0;
+        size = 0;
     }
 
     @Override
     public int size() {
-        return nItems;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return (nItems == 0);
+        return size == 0;
     }
 
     @Override
     public boolean contains(Object value) {
-        return (indexOf(value) >= 0);
+        return indexOf(value) >= 0;
     }
 
     @Override
     public int indexOf(Object value) {
-        if (value == null) {
-            for (int i = 0; i < nItems; i++) {
-                if (array[i] == null) {
-                    return i;
-                }
-            }
-            return -1;
-        } else {
-            for (int i = 0; i < nItems; i++) {
-                if (value.equals(array[i])) {
-                    return i;
-                }
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(array[i], value)) {
+                return i;
             }
         }
         return -1;
@@ -136,18 +100,9 @@ public class SimpleArrayList implements List {
 
     @Override
     public int lastIndexOf(Object value) {
-        if (value == null) {
-            for (int i = nItems - 1; i >= 0; i--) {
-                if (array[i] == null) {
-                    return i;
-                }
-            }
-            return -1;
-        } else {
-            for (int i = nItems - 1; i >= 0; i--) {
-                if (value.equals(array[i])) {
-                    return i;
-                }
+        for (int i = size - 1; i >= 0; i--) {
+            if (Objects.equals(array[i], value)) {
+                return i;
             }
         }
         return -1;
@@ -155,10 +110,35 @@ public class SimpleArrayList implements List {
 
     @Override
     public String toString() {
+        if (size == 0) {
+            return "[]";
+        }
         StringJoiner result = new StringJoiner(", ", "[", "]");
-        for (int i = 0; i < nItems; i++) {
+        for (int i = 0; i < size; i++) {
             result.add(array[i].toString());
         }
         return result.toString();
+    }
+
+    int getCapacity() {
+        return array.length;
+    }
+
+    private void increaseCapacity() {
+        Object[] newArray = new Object[array.length * 3/2 + 1];
+        System.arraycopy(array, 0, newArray, 0, size);
+        array = newArray;
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Illegal argument: " + index);
+        }
+    }
+
+    private void checkIndexForAdd(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Illegal argument: " + index);
+        }
     }
 }

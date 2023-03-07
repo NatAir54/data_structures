@@ -1,9 +1,11 @@
 package com.studying.datastructures.list;
 
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class SimpleLinkedList implements List{
+public class SimpleLinkedList implements List, Iterable {
     private Node head;
     private Node tail;
     private int size;
@@ -189,6 +191,32 @@ public class SimpleLinkedList implements List{
             this.value = value;
         }
     }
+
+    @Override
+    public Iterator iterator() {
+        return new MyIterator();
+    }
+
+    private class MyIterator implements Iterator {
+        private int count = 0;
+        Node current = head;
+
+        @Override
+        public boolean hasNext() {
+            return count < size;
+        }
+
+        @Override
+        public Object next() {
+            if (count > 0) {
+                current = current.next;
+            }
+            count++;
+            return current.value;
+        }
+    }
+
+
 
 }
 

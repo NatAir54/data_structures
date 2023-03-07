@@ -1,9 +1,13 @@
 package com.studying.datastructures.stack;
 
-import java.util.Arrays;
+import com.studying.datastructures.list.SimpleArrayList;
 
-public class ArrayStack implements Stack {
-    private int nItems;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.ListIterator;
+
+public class ArrayStack implements Stack, Iterable {
+    private int size;
     private Object[] array;
 
     public ArrayStack() {
@@ -30,12 +34,12 @@ public class ArrayStack implements Stack {
             throw new IllegalArgumentException("IllegalArgument: " + null);
         }
         increaseCapacity();
-        array[nItems] = value;
-        nItems++;
+        array[size] = value;
+        size++;
     }
 
     private void increaseCapacity() {
-        if (nItems == array.length) {
+        if (size == array.length) {
             Object[] newArray = new Object[array.length * 2];
             for (int i = 0; i < array.length; i++) {
                 newArray[i] = array[i];
@@ -46,25 +50,25 @@ public class ArrayStack implements Stack {
 
     @Override
     public Object peek() {
-        if (nItems == 0) {
+        if (size == 0) {
             throw new IllegalStateException("Stack is empty");
         }
-        return array[nItems - 1];
+        return array[size - 1];
     }
 
     @Override
     public Object pop() {
-        if (nItems == 0) {
+        if (size == 0) {
             throw new IllegalStateException("Stack is empty");
         }
-        Object deletedValue = array[nItems - 1];
-        nItems--;
+        Object deletedValue = array[size - 1];
+        size--;
         return deletedValue;
     }
 
     @Override
     public int size() {
-        return nItems;
+        return size;
     }
 
     @Override
@@ -72,7 +76,7 @@ public class ArrayStack implements Stack {
         if (value == null) {
             throw new IllegalArgumentException("IllegalArgument: " + null);
         }
-        for (int i = 0; i < nItems; i++) {
+        for (int i = 0; i < size; i++) {
             if (value.equals(array[i])) {
                 return true;
             }
@@ -82,12 +86,31 @@ public class ArrayStack implements Stack {
 
     @Override
     public boolean isEmpty() {
-        return (nItems == 0);
+        return (size == 0);
     }
 
     @Override
     public void clear() {
         Arrays.fill(array, null);
-        nItems = 0;
+        size = 0;
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new StackIterator();
+    }
+
+    private class StackIterator implements Iterator {
+        private int index = 0;
+
+        @Override
+        public boolean hasNext() {
+            return index < size;
+        }
+
+        @Override
+        public Object next() {
+            return array[index++];
+        }
     }
 }

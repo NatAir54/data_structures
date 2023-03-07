@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -305,6 +307,19 @@ public abstract class AbstractListTest {
         list.add("b");
         list.add(null);
         assertEquals(3, list.lastIndexOf(null));
+    }
+
+    @DisplayName("test iterator")
+    @Test
+    void testIterator() {
+        list.add(1);
+        list.add(2);
+        list.add(3);
+
+        Iterator iterator  = list.iterator();
+        while(iterator.hasNext()) {
+            System.out.print(iterator.next() + " ");
+        }
     }
 
 

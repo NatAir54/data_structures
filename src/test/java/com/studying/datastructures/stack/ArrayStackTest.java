@@ -1,8 +1,11 @@
 package com.studying.datastructures.stack;
 
+import com.studying.datastructures.list.SimpleArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,14 +32,14 @@ public class ArrayStackTest {
             arrayStack.push(i);
         }
         for (int i = 0; i < arrayStack.size(); i++) {
-            System.out.println(arrayStack.pop());
+            arrayStack.pop();
         }
 
         for (int i = 0; i < arrayStack.size(); i++) {
             arrayStack.push(i);
         }
         for (int i = 0; i < arrayStack.size(); i++) {
-            System.out.println(arrayStack.pop());
+            arrayStack.pop();
         }
     }
 
@@ -165,5 +168,19 @@ public class ArrayStackTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new ArrayStack(-1);
         });
+    }
+
+    @DisplayName("test iterator")
+    @Test
+    void testIterator() {
+        ArrayStack arrayStack = new ArrayStack(4);
+        arrayStack.push(1);
+        arrayStack.push(2);
+        arrayStack.push(3);
+
+        Iterator iterator  = arrayStack.iterator();
+        while(iterator.hasNext()) {
+            System.out.print(iterator.next() + " ");
+        }
     }
 }

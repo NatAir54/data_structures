@@ -32,14 +32,14 @@ public class LinkedQueueTest {
             linkedQueue.enqueue(i);
         }
         for (int i = 0; i < 10; i++) {
-            System.out.println(linkedQueue.dequeue());
+            linkedQueue.dequeue();
         }
 
         for (int i = 0; i < 10; i++) {
             linkedQueue.enqueue(i);
         }
         for (int i = 0; i < 10; i++) {
-            System.out.println(linkedQueue.dequeue());
+            linkedQueue.dequeue();
         }
     }
 

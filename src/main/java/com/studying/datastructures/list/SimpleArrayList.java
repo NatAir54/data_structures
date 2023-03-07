@@ -1,9 +1,10 @@
 package com.studying.datastructures.list;
 
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class SimpleArrayList implements List {
+public class SimpleArrayList implements List, Iterable {
     private static final int DEFAULT_CAPACITY = 10;
     private Object[] array;
     private int size;
@@ -125,7 +126,7 @@ public class SimpleArrayList implements List {
     }
 
     private void increaseCapacity() {
-        Object[] newArray = new Object[array.length * 3/2 + 1];
+        Object[] newArray = new Object[array.length * 3 / 2 + 1];
         System.arraycopy(array, 0, newArray, 0, size);
         array = newArray;
     }
@@ -139,6 +140,25 @@ public class SimpleArrayList implements List {
     private void checkIndexForAdd(int index) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Illegal argument: " + index);
+        }
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new MyIterator();
+    }
+
+    private class MyIterator implements Iterator {
+        private int index = 0;
+
+        @Override
+        public boolean hasNext() {
+            return index < size;
+        }
+
+        @Override
+        public Object next() {
+            return array[index++];
         }
     }
 }

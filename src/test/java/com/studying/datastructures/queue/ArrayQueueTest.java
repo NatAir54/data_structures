@@ -44,14 +44,14 @@ public class ArrayQueueTest {
             arrayQueue.enqueue(i);
         }
         for (int i = 0; i < arrayQueue.size(); i++) {
-            System.out.println(arrayQueue.dequeue());
+            arrayQueue.dequeue();
         }
 
         for (int i = 0; i < arrayQueue.size(); i++) {
             arrayQueue.enqueue(i);
         }
         for (int i = 0; i < arrayQueue.size(); i++) {
-            System.out.println(arrayQueue.dequeue());
+           arrayQueue.dequeue();
         }
     }
 

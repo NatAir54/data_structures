@@ -90,6 +90,7 @@ public class SimpleLinkedList implements List, Iterable {
     @Override
     public void clear() {
         head = null;
+        tail = null;
         size = 0;
     }
 

@@ -1,24 +1,19 @@
 package com.studying.datastructures.list;
 
 import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.StringJoiner;
 
-public class SimpleLinkedList implements List, Iterable {
-    private Node head;
-    private Node tail;
-    private int size;
 
-    @Override
-    public void add(Object value) {
-        add(value, size);
-    }
+public class SimpleLinkedList<T> extends AbstractList<T>{
+    private Node<T> head;
+    private Node<T> tail;
+
 
     @Override
-    public void add(Object value, int index) {
+    public void add(T value, int index) {
         checkIndexForAdd(index);
-        Node newNode = new Node(value);
+        Node<T> newNode = new Node<>(value);
         if (size == 0) {
             head = tail = newNode;
         } else if (index == size) {
@@ -30,8 +25,8 @@ public class SimpleLinkedList implements List, Iterable {
             newNode.next = head;
             head = newNode;
         } else {
-            Node current = getNode(index);
-            Node temp = current.prev;
+            Node<T> current = getNode(index);
+            Node<T> temp = current.prev;
             temp.next = newNode;
             newNode.prev = temp;
             newNode.next = current;
@@ -41,21 +36,15 @@ public class SimpleLinkedList implements List, Iterable {
     }
 
     @Override
-    public Object get(int index) {
+    public T get(int index) {
         checkIndex(index);
-        if (index == 0) {
-            return head.value;
-        }
-        if (index == size - 1) {
-            return tail.value;
-        }
         return getNode(index).value;
     }
 
     @Override
-    public Object remove(int index) {
+    public T remove(int index) {
         checkIndex(index);
-        Node nodeToRemove;
+        Node<T> nodeToRemove;
         if (size == 1) {
             nodeToRemove = head;
             head = tail = null;
@@ -69,8 +58,8 @@ public class SimpleLinkedList implements List, Iterable {
             tail.next = null;
         } else {
             nodeToRemove = getNode(index);
-            Node temp = nodeToRemove.prev;
-            Node temp2 = nodeToRemove.next;
+            Node<T> temp = nodeToRemove.prev;
+            Node<T> temp2 = nodeToRemove.next;
             temp.next = temp2;
             temp2.prev = temp;
         }
@@ -79,10 +68,10 @@ public class SimpleLinkedList implements List, Iterable {
     }
 
     @Override
-    public Object set(Object value, int index) {
+    public T set(T value, int index) {
         checkIndex(index);
-        Node current = getNode(index);
-        Object oldValue = current.value;
+        Node<T> current = getNode(index);
+        T oldValue = current.value;
         current.value = value;
         return oldValue;
     }
@@ -95,18 +84,8 @@ public class SimpleLinkedList implements List, Iterable {
     }
 
     @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    @Override
-    public boolean contains(Object value) {
-        Node current = head;
+    public boolean contains(T value) {
+        Node<T> current = head;
         while (current != null) {
             if (Objects.equals(current.value, value)) {
                 return true;
@@ -117,8 +96,8 @@ public class SimpleLinkedList implements List, Iterable {
     }
 
     @Override
-    public int indexOf(Object value) {
-        Node current = head;
+    public int indexOf(T value) {
+        Node<T> current = head;
         int index = -1;
         while (current != null) {
             ++index;
@@ -131,8 +110,8 @@ public class SimpleLinkedList implements List, Iterable {
     }
 
     @Override
-    public int lastIndexOf(Object value) {
-        Node current = tail;
+    public int lastIndexOf(T value) {
+        Node<T> current = tail;
         int index = size - 1;
         while (current != null) {
             if (Objects.equals(current.value, value)) {
@@ -144,31 +123,20 @@ public class SimpleLinkedList implements List, Iterable {
         return -1;
     }
 
-    @Override
-    public String toString() {
-        StringJoiner result = new StringJoiner(", ", "[", "]");
-        Node current = head;
-        while (current != null) {
-            result.add(String.valueOf(current.value));
-            current = current.next;
-        }
-        return result.toString();
-    }
-
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Illegal argument: " + index);
+            throw new IndexOutOfBoundsException("Index %d is out of bounds [0, %d) : " + index + size);
         }
     }
 
     private void checkIndexForAdd(int index) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Illegal argument: " + index);
+            throw new IndexOutOfBoundsException("Index %d is out of bounds [0, %d] : " + index + size);
         }
     }
 
-    private Node getNode(int index) {
-        Node current;
+    private Node<T> getNode(int index) {
+        Node<T> current;
         if (index < size / 2) {
             current = head;
             for (int i = 0; i < index; i++) {
@@ -183,41 +151,46 @@ public class SimpleLinkedList implements List, Iterable {
         return current;
     }
 
-    private static class Node {
-        private Node next;
-        private Node prev;
-        private Object value;
+    private static class Node<T> {
+        private Node<T> next;
+        private Node<T> prev;
+        private T value;
 
-        private Node(Object value) {
+        private Node(T value) {
             this.value = value;
         }
     }
 
     @Override
-    public Iterator iterator() {
+    public MyIterator iterator() {
         return new MyIterator();
     }
 
-    private class MyIterator implements Iterator {
-        private int count = 0;
-        Node current = head;
+    private class MyIterator implements Iterator<T> {
+        private int index = 0;
+        private Node<T> current = head;
 
         @Override
         public boolean hasNext() {
-            return count < size;
+            return index < size;
         }
 
         @Override
-        public Object next() {
-            if (count > 0) {
-                current = current.next;
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("There is no element to iterate.");
             }
-            count++;
-            return current.value;
+            T value = current.value;
+            current = current.next;
+            index++;
+            return value;
+        }
+
+        @Override
+        public void remove() {
+            Iterator.super.remove();
         }
     }
-
-
 
 }
 

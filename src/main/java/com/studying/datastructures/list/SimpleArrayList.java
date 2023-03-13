@@ -1,13 +1,14 @@
 package com.studying.datastructures.list;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.StringJoiner;
 
-public class SimpleArrayList implements List, Iterable {
+
+public class SimpleArrayList<T> extends AbstractList<T>{
     private static final int DEFAULT_CAPACITY = 10;
-    private Object[] array;
-    private int size;
+    private T[] array;
+
 
     public SimpleArrayList() {
         this(DEFAULT_CAPACITY);
@@ -17,51 +18,42 @@ public class SimpleArrayList implements List, Iterable {
         if (initialCapacity < 0) {
             throw new IllegalArgumentException("Invalid capacity : " + initialCapacity);
         }
-        array = new Object[initialCapacity];
+        array = (T[]) new Object [initialCapacity];
     }
 
     @Override
-    public void add(Object value) {
-        add(value, size);
-    }
-
-    @Override
-    public void add(Object value, int index) {
+    public void add(T value, int index) {
         checkIndexForAdd(index);
-        if (array.length == 0) {
-            increaseCapacity();
-        }
         if (size == array.length) {
             increaseCapacity();
         }
         System.arraycopy(array, index, array, index + 1, size - index);
         array[index] = value;
-        ++size;
+        size++;
     }
 
     @Override
-    public Object get(int index) {
+    public T get(int index) {
         checkIndex(index);
         return array[index];
     }
 
     @Override
-    public Object remove(int index) {
+    public T remove(int index) {
         checkIndex(index);
-        Object removedValue = array[index];
-        if (index == size - 1) {
-            array[--size] = null;
-            return removedValue;
+        T removedValue = array[index];
+        if (index != size -1) {
+            System.arraycopy(array, index + 1, array, index, size - index - 1);
         }
-        System.arraycopy(array, index + 1, array, index, size - index - 1);
-        array[--size] = null;
+        array[size - 1] = null;
+        size--;
         return removedValue;
     }
 
     @Override
-    public Object set(Object newValue, int index) {
+    public T set(T newValue, int index) {
         checkIndex(index);
-        Object oldValue = array[index];
+        T oldValue = array[index];
         array[index] = newValue;
         return oldValue;
     }
@@ -75,22 +67,12 @@ public class SimpleArrayList implements List, Iterable {
     }
 
     @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    @Override
-    public boolean contains(Object value) {
+    public boolean contains(T value) {
         return indexOf(value) >= 0;
     }
 
     @Override
-    public int indexOf(Object value) {
+    public int indexOf(T value) {
         for (int i = 0; i < size; i++) {
             if (Objects.equals(array[i], value)) {
                 return i;
@@ -100,7 +82,7 @@ public class SimpleArrayList implements List, Iterable {
     }
 
     @Override
-    public int lastIndexOf(Object value) {
+    public int lastIndexOf(T value) {
         for (int i = size - 1; i >= 0; i--) {
             if (Objects.equals(array[i], value)) {
                 return i;
@@ -109,46 +91,34 @@ public class SimpleArrayList implements List, Iterable {
         return -1;
     }
 
-    @Override
-    public String toString() {
-        if (size == 0) {
-            return "[]";
-        }
-        StringJoiner result = new StringJoiner(", ", "[", "]");
-        for (int i = 0; i < size; i++) {
-            result.add(array[i].toString());
-        }
-        return result.toString();
-    }
-
     int getCapacity() {
         return array.length;
     }
 
     private void increaseCapacity() {
-        Object[] newArray = new Object[array.length * 3 / 2 + 1];
+        T[] newArray = (T[]) new Object[array.length * 3 / 2 + 1];
         System.arraycopy(array, 0, newArray, 0, size);
         array = newArray;
     }
 
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Illegal argument: " + index);
+            throw new IndexOutOfBoundsException("Index %d is out of bounds [0, %d) : " + index + size);
         }
     }
 
     private void checkIndexForAdd(int index) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Illegal argument: " + index);
+            throw new IndexOutOfBoundsException("Index %d is out of bounds [0, %d] : " + index + size);
         }
     }
 
     @Override
-    public Iterator iterator() {
+    public MyIterator iterator() {
         return new MyIterator();
     }
 
-    private class MyIterator implements Iterator {
+    private class MyIterator implements Iterator<T> {
         private int index = 0;
 
         @Override
@@ -157,8 +127,17 @@ public class SimpleArrayList implements List, Iterable {
         }
 
         @Override
-        public Object next() {
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("There is no element to iterate.");
+            }
             return array[index++];
         }
+
+        @Override
+        public void remove() {
+            Iterator.super.remove();
+        }
     }
+
 }

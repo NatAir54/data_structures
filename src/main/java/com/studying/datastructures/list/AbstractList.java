@@ -2,8 +2,9 @@ package com.studying.datastructures.list;
 
 import java.util.StringJoiner;
 
-public abstract class AbstractList<T> implements List<T>{
+public abstract class AbstractList<T> implements List<T> {
     protected int size;
+
     @Override
     public void add(T value) {
         add(value, size);
@@ -22,7 +23,7 @@ public abstract class AbstractList<T> implements List<T>{
     @Override
     public String toString() {
         StringJoiner result = new StringJoiner(", ", "[", "]");
-        for(T value : this){
+        for (T value : this) {
             result.add(String.valueOf(value));
         }
         return result.toString();

@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 
-public class SimpleLinkedList<T> extends AbstractList<T>{
+public class SimpleLinkedList<T> extends AbstractList<T> {
     private Node<T> head;
     private Node<T> tail;
 
@@ -169,10 +169,11 @@ public class SimpleLinkedList<T> extends AbstractList<T>{
     private class MyIterator implements Iterator<T> {
         private int index = 0;
         private Node<T> current = head;
+        private boolean allowedToRemove;
 
         @Override
         public boolean hasNext() {
-            return index < size;
+            return current != null;
         }
 
         @Override
@@ -183,12 +184,18 @@ public class SimpleLinkedList<T> extends AbstractList<T>{
             T value = current.value;
             current = current.next;
             index++;
+            allowedToRemove = true;
             return value;
         }
 
         @Override
         public void remove() {
-            Iterator.super.remove();
+            if (!allowedToRemove) {
+                throw new IllegalStateException("This element has been removed already.");
+            }
+            SimpleLinkedList.this.remove(index - 1);
+            allowedToRemove = false;
+            index--;
         }
     }
 

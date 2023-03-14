@@ -8,15 +8,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SimpleArrayListTest extends AbstractListTest {
     @Override
-    protected List getList() {
-        return new SimpleArrayList();
+    protected List<Integer> getList() {
+        return new SimpleArrayList<>();
     }
 
 
     @DisplayName("test constructor with default capacity work correctly")
     @Test
     void testConstructorWithDefaultCapacityWorkCorrectly() {
-        SimpleArrayList list = new SimpleArrayList();
+        SimpleArrayList<String> list = new SimpleArrayList<>();
         list.add("a");
         list.add("b");
         assertEquals(10, list.getCapacity());
@@ -27,7 +27,7 @@ public class SimpleArrayListTest extends AbstractListTest {
     @DisplayName("test constructor with initial capacity work correctly")
     @Test
     void testConstructorWithInitialCapacityWorkCorrectly() {
-        SimpleArrayList list = new SimpleArrayList(16);
+        SimpleArrayList<String> list = new SimpleArrayList<>(16);
         list.add("a");
         list.add("b");
         assertEquals(16, list.getCapacity());
@@ -36,17 +36,15 @@ public class SimpleArrayListTest extends AbstractListTest {
     @DisplayName("test constructor with initial capacity throw IllegalArgumentException")
     @Test
     void testConstructorWithInitialCapacityThrowIllegalArgumentException() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new SimpleArrayList(-1);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new SimpleArrayList<String>(-1));
     }
 
     @DisplayName("test increaseCapacity for constructor with default capacity works correctly")
     @Test
     void testIncreaseCapacityForConstructorWithDefaultCapacityWorkCorrectly() {
-        SimpleArrayList list = new SimpleArrayList();
+        SimpleArrayList<String> list = new SimpleArrayList<>();
         for (int i = 0; i < 11; i++) {
-            list.add(i);
+            list.add("q");
         }
         assertEquals(16, list.getCapacity());
     }
@@ -54,9 +52,9 @@ public class SimpleArrayListTest extends AbstractListTest {
     @DisplayName("test increaseCapacity for constructor with initial capacity works correctly")
     @Test
     void testIncreaseCapacityForConstructorWithInitialCapacityWorkCorrectly() {
-        SimpleArrayList list = new SimpleArrayList(16);
+        SimpleArrayList<String> list = new SimpleArrayList<>(16);
         for (int i = 0; i < 17; i++) {
-            list.add(i, 0);
+            list.add("x", 0);
         }
         assertEquals(25, list.getCapacity());
     }
@@ -64,11 +62,12 @@ public class SimpleArrayListTest extends AbstractListTest {
     @DisplayName("test increase capacity for constructor with zero initial capacity work correctly")
     @Test
     void testIncreaseCapacityForConstructorWithZeroInitialCapacityWorkCorrectly() {
-        SimpleArrayList list = new SimpleArrayList(0);
+        SimpleArrayList<String> list = new SimpleArrayList<>(0);
         for (int i = 0; i < 3; i++) {
-            list.add(i);
+            list.add("a");
         }
         assertEquals(4, list.getCapacity());
     }
+
 
 }

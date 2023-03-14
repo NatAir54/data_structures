@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 
-public class SimpleArrayList<T> extends AbstractList<T>{
+public class SimpleArrayList<T> extends AbstractList<T> {
     private static final int DEFAULT_CAPACITY = 10;
     private T[] array;
 
@@ -18,7 +18,7 @@ public class SimpleArrayList<T> extends AbstractList<T>{
         if (initialCapacity < 0) {
             throw new IllegalArgumentException("Invalid capacity : " + initialCapacity);
         }
-        array = (T[]) new Object [initialCapacity];
+        array = (T[]) new Object[initialCapacity];
     }
 
     @Override
@@ -42,7 +42,7 @@ public class SimpleArrayList<T> extends AbstractList<T>{
     public T remove(int index) {
         checkIndex(index);
         T removedValue = array[index];
-        if (index != size -1) {
+        if (index != size - 1) {
             System.arraycopy(array, index + 1, array, index, size - index - 1);
         }
         array[size - 1] = null;
@@ -120,6 +120,7 @@ public class SimpleArrayList<T> extends AbstractList<T>{
 
     private class MyIterator implements Iterator<T> {
         private int index = 0;
+        private boolean allowedToRemove;
 
         @Override
         public boolean hasNext() {
@@ -131,12 +132,18 @@ public class SimpleArrayList<T> extends AbstractList<T>{
             if (!hasNext()) {
                 throw new NoSuchElementException("There is no element to iterate.");
             }
+            allowedToRemove = true;
             return array[index++];
         }
 
         @Override
         public void remove() {
-            Iterator.super.remove();
+            if (!allowedToRemove) {
+                throw new IllegalStateException("This element has been removed already.");
+            }
+            SimpleArrayList.this.remove(index - 1);
+            allowedToRemove = false;
+            index--;
         }
     }
 
